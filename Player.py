@@ -6,17 +6,21 @@ HEIGHT = 650
 WIDTH = 1100
 ALBUM_DIR = "/home/leon/DevelopmentDir/MP3Player/files/songs"
 IMG_DIR = "/home/leon/DevelopmentDir/MP3Player/files/images"
+song = ALBUM_DIR + '/music1.mp3'
+
 
 root = tk.Tk()
 root.title("MP3 Player")
+pg.init()
 pg.mixer.init()
 
 
 def play():
-    pg.init()
-    pg.mixer.init()
-    pg.mixer.music.load(song)
-    pg.mixer.music.play()
+    if not pg.mixer.music.get_busy():
+        pg.mixer.music.load(song)
+        pg.mixer.music.play()
+    else:
+        pg.mixer.music.unpause()
 
 
 def stop():
@@ -24,7 +28,7 @@ def stop():
 
 
 def pause():
-    return 0
+    pg.mixer.music.pause()
 
 
 # def get_album():
@@ -59,7 +63,5 @@ pauseButton.place(relx=0.4, rely=0, relwidth=0.2, relheight=1)
 
 songListFrame = tk.Frame(root, bg='#373737')
 songListFrame.place(relx=0.1, rely=0.35, relwidth=0.8, relheight=0.5)
-
-song = ALBUM_DIR + '/music1.mp3'
 
 root.mainloop()
