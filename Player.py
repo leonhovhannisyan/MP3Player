@@ -6,8 +6,7 @@ HEIGHT = 650
 WIDTH = 1100
 ALBUM_DIR = "/home/leon/DevelopmentDir/MP3Player/files/songs"
 IMG_DIR = "/home/leon/DevelopmentDir/MP3Player/files/images"
-song = ALBUM_DIR + '/music1.mp3'
-
+sample = ALBUM_DIR + '/music1.mp3'
 
 root = tk.Tk()
 root.title("MP3 Player")
@@ -17,7 +16,7 @@ pg.mixer.init()
 
 def play():
     if not pg.mixer.music.get_busy():
-        pg.mixer.music.load(song)
+        pg.mixer.music.load(sample)
         pg.mixer.music.play()
     else:
         pg.mixer.music.unpause()
@@ -31,13 +30,13 @@ def pause():
     pg.mixer.music.pause()
 
 
-# def get_album():
-#     albumarray = []
-#     for i in range(3):
-#         albumarray.append(pg.mixer.music.load(os.path.join(ALBUM_DIR, '/music')))
-#
-#     return albumarray
+os.chdir(ALBUM_DIR)
+songs = os.listdir()
+songString = 'Current directory: ' + ALBUM_DIR + ': \n\n\n'
+for song in songs:
+    songString += song + '\n'
 
+print(songString)
 
 canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
 canvas.pack()
@@ -60,8 +59,13 @@ pauseIcon = tk.PhotoImage(file=IMG_DIR + '/pause.png') #PAUSE
 pauseIcon = pauseIcon.subsample(5)
 pauseButton = tk.Button(songFrame, image=pauseIcon, command=pause)
 pauseButton.place(relx=0.4, rely=0, relwidth=0.2, relheight=1)
+timerLabel = tk.Label(songFrame, text='placeholder')
+timerLabel.place(relx= 0.6, rely=0, relwidth=0.4, relheight=1)
+
 
 songListFrame = tk.Frame(root, bg='#373737')
 songListFrame.place(relx=0.1, rely=0.35, relwidth=0.8, relheight=0.5)
+songListLabel = tk.Label(songListFrame, text=songString)
+songListLabel.place(relx=0, rely=0.1, relwidth=1, relheight=1)
 
 root.mainloop()
